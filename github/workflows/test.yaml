@@ -1,0 +1,122 @@
+ build workflow scripts example
+
+Cameron McKenzie
+Cameron McKenzie
+TechTarget
+04 Dec 2020
+About This Blog
+
+Community driven content discussing all aspects of software development from DevOps to design patterns.
+Latest Blog Posts
+
+    Docker interview questions for developers
+    Four interviewing techniques to evaluate a tech hire
+    Hands-on Kubernetes interview questions
+    See More
+
+Related Content
+
+    Network session data analysis with Snort and Argus – ComputerWeekly.com
+    How do I install Java on Ubuntu? – TheServerSide.com
+    Snort command line output modes – SearchITChannel
+
+Sponsored News
+
+    Accelerate and Simplify Your Journey to a Zero Trust Architecture
+    –Dell Technologies
+    Frequently Asked Questions: Using As-a-Service IT to Deliver Transformative ...
+    –Dell Technologies
+
+Vendor Resources
+
+    A guide to developing modern mobile applications
+    –ComputerWeekly.com
+    A guide to continuous software delivery
+    –ComputerWeekly.com
+
+If a developer wants to build a workflow, shell script or build job of any merit, they’ll need to take advantage of the various GitHub Actions environment variables that are available through the tool.
+
+The standard documentation pages tell developers about the default GitHub Actions environment variables, which are prefixed with the string GITHUB and includes variables such as GITHUB_WORKFLOW, GITHUB_RUN_ID and GITHUB_ACTION. However, that’s by no means the full list of GitHub Actions environment variables available to developers when they create workflows on Ubuntu, Linus or MacOS.
+
+Each container where continuous integration builds run offers a full suite of environment variables that the shell scripts and workflows should take advantage of. We’ll examine the full list of GitHub Actions environment variables, and more importantly, I’ll show you how to write a simple workflow so a developer can inspect their own environment and see for themselves what variables are available to use.
+Your intro to GitHub Actions training course
+
+Here’s how to get started with GitHub Actions:
+
+    Create your first GitHub Actions Workflow issues
+    Poke around in the Actions’ Docker container
+    Learn about a multi-step GitHub workflows
+    See how a multi-job GitHub Action works
+    Familiarize yourself with GitHub Actions environment variables on Ubuntu, Windows and MacOS
+    Learn to use GitHub Action Secrets
+
+Follow these tutorials and you’ll learn GitHub Actions fast.
+Default GitHub Actions environment variables
+
+The 18 default environment variables available to any GitHub Actions workflow or shell script are:
+
+    CI
+    GITHUB_WORKFLOW
+    GITHUB_RUN_ID
+    GITHUB_RUN_NUMBER
+    GITHUB_ACTION
+    GITHUB_ACTIONS
+    GITHUB_ACTOR
+    GITHUB_REPOSITORY
+    GITHUB_EVENT_NAME
+    GITHUB_EVENT_PATH
+    GITHUB_WORKSPACE
+    GITHUB_SHA
+    GITHUB_REF
+    GITHUB_HEAD_REF
+    GITHUB_BASE_REF
+    GITHUB_SERVER_URL
+    GITHUB_API_URL
+    GITHUB_GRAPHQL_URL
+
+Full GitHub Actions environment variables List
+
+While that’s an impressive list, if a developer is doing a build on the ubuntu-latest image, their build workflows have over 60 more GitHub Actions environment variables at their disposal. While they’re standard issue, they differ from distro to distro. For example, the macos-latest may have a few more or a few less variables available than ubuntu-latest.
+
+Take the PATH variable for example, that’s available on windows-latest. But for obvious reasons, it’s not available on ubuntu-latest because Linux distros don’t have a configurable PATH.
+
+In fairness, this example combines what some might consider system variables with the environment variables specifically provided by the continuous integration framework. But since all these system and environment variables are available to GitHub Action workflows and scripts, I don’t feel guilty about combining them in a single discussion.
+GitHub Actions environment variables shell script
+
+The full list of 81 or so environment and system variables is further down in this article. But there’s always a chance that the list will get outdated as soon as a new container is configured. Developers shouldn’t solely rely on what’s written here, and instead they should inspect their runtime container on their own to find out.
+
+Here’s a simple YAML file that allows developers to inspect GitHub Actions environment variables on Windows, MacOS and Ubuntu. And if they’ve already got a GitHub account of their own, it’ll only take about two minutes to configure it.
+GitHub Actions variables list script
+
+The steps used in the following workflow to print out all GitHub Actions environment variables are:
+
+    Create a simple YAML file that runs on a push to main or master
+    Add three jobs, one for each of Ubuntu, Windows and MacOS
+    Run a single GitHub Action step in each job that simply invokes the env command
+    Run the build
+    View the GitHub Action environment variable list in the job status window
+
+# Publish GitHub workflow artifacts tutorial example
+name: Publish GitHub Actions Artifacts Example
+on:
+  push:
+    branches: [ main ]
+jobs:
+  github-actions-environment-variables-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List of the GitHub Actions environment variables on Windows
+        run: env
+
+  github-actions-environment-variables-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Ubuntu GitHub Actions environment variables List
+        run: env
+
+  github-actions-environment-variables-macos:
+    runs-on: macos-latest
+    steps:
+      - name: MacOs List of GitHub Actions environment variables
+        run: env
+
